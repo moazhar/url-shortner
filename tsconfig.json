@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonJS",
+    "outDir": "./dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "typeRoots": [
+      "./node_module/@types",
+      "./src/types"
+    ]
+  },
+  "include": ["src/**/*.ts", "env.ts", ".eslintrc.js"],
+  "exclude": ["node_modules"]
+}
