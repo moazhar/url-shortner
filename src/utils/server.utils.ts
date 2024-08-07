@@ -9,6 +9,7 @@ import cors from 'cors';
 
 import env from '../../env';
 import ErrorHandler from '../middleware/error-handler.middleware';
+import routes from '../route/index';
 
 class ServerUtility {
   private static instance: ServerUtility;
@@ -54,6 +55,7 @@ class ServerUtility {
     });
 
     /** Define routes here */
+    this.app.use('/api/v1', routes);
 
     // Global Error Middleware
     this.app.use(ErrorHandler);
