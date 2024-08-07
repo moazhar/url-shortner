@@ -6,6 +6,7 @@ import express, {
 import logger from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
+import path from 'path';
 
 import env from '../../env';
 import ErrorHandler from '../middleware/error-handler.middleware';
@@ -34,6 +35,7 @@ class ServerUtility {
 
   public configureMiddleware(): void {
     const logFormat = env.NODE_ENV === 'production' ? 'combined' : 'dev';
+    const viewsPath = path.resolve(__dirname, '../view');
 
     // HTTP request logger
     this.app.use(logger(logFormat));
@@ -41,11 +43,20 @@ class ServerUtility {
     // JSON body parser
     this.app.use(express.json());
 
+    // Parse URL-encoded bodies (as sent by HTML forms)
+    this.app.use(express.urlencoded({ extended: false }));
+
     // Protection against vulnerabilities and attacks
     this.app.use(helmet());
 
     // Cross Origin Resource Sharing
     this.app.use(cors());
+
+    // Set view engine
+    this.app.set('view engine', 'ejs');
+
+    // Set path to views
+    this.app.set('views', viewsPath);
 
     // Server health check
     this.app.use('/health', (req: Request, res: Response) => {

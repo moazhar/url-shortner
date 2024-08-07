@@ -16,7 +16,7 @@ class URLShortnerController {
       redirect_url: redirectUrl,
     });
 
-    ResponseUtility.success(res, data, undefined, 201);
+    res.render('home', { id: data.short_id });
   };
 
   public static redirectShortUrl = async (req: Request, res: Response) => {
