@@ -1,0 +1,3 @@
+const PASSWORD_SALT_ROUND = 10;
+
+export default PASSWORD_SALT_ROUND;

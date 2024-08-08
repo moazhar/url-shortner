@@ -2,7 +2,9 @@ import express, {
   type Request,
   type Response,
   type Application,
+  NextFunction,
 } from 'express';
+import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
@@ -46,6 +48,9 @@ class ServerUtility {
     // Parse URL-encoded bodies (as sent by HTML forms)
     this.app.use(express.urlencoded({ extended: false }));
 
+    // Parse cookies
+    this.app.use(cookieParser());
+
     // Protection against vulnerabilities and attacks
     this.app.use(helmet());
 
@@ -63,6 +68,14 @@ class ServerUtility {
       res.status(200).json({
         status: 'Ok',
       });
+    });
+
+    // Lowercase emails before processing
+    this.app.use((req: Request, res: Response, next: NextFunction) => {
+      if (req.body && req.body.email) {
+        req.body.email = req.body.email.toLowerCase();
+      }
+      next();
     });
 
     /** Define routes here */

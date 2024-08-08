@@ -2,9 +2,16 @@ import express from 'express';
 
 import catchAsync from '../middleware/async-execute.middleware';
 import StaticController from '../controller/static.controller';
+import { checkAuth } from '../middleware/authenticate.middleware';
 
-const route = express.Router();
+const router = express.Router();
 
-route.get('/', catchAsync(StaticController.renderHomePage));
+router.get(
+  '/',
+  catchAsync(checkAuth),
+  catchAsync(StaticController.renderHomePage)
+);
+router.get('/signup', catchAsync(StaticController.renderSignUpPage));
+router.get('/signin', catchAsync(StaticController.renderSignInPage));
 
-export default route;
+export default router;

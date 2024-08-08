@@ -1,17 +1,24 @@
 import { Request, Response } from 'express';
+import mongoose from 'mongoose';
 
 import ResponseUtility from '../utils/response.utils';
 import BaseUtility from '../utils/base.utils';
-import URLModel from '../model/url.model';
+import { URLModel } from '../model/url.model';
 import AppError from '../utils/error.utils';
 import { BAD_REQUEST } from '../constant/error.constant';
+import { CustomRequest } from '../types/custom.types';
 
 class URLShortnerController {
-  public static generateShortUrl = async (req: Request, res: Response) => {
+  public static generateShortUrl = async (
+    req: CustomRequest,
+    res: Response
+  ) => {
     const { redirectUrl } = req.body;
+    const { id } = req.user;
     const shortId = BaseUtility.getRandomString();
 
     const data = await URLModel.create({
+      userId: new mongoose.Types.ObjectId(id),
       short_id: shortId,
       redirect_url: redirectUrl,
     });
@@ -31,7 +38,7 @@ class URLShortnerController {
       });
     }
 
-    url.visits.push({ timestamp: Date.now() });
+    url.visits?.push({ timestamp: new Date() });
     await url.save();
 
     res.redirect(url.redirect_url);
@@ -50,7 +57,7 @@ class URLShortnerController {
     }
 
     const data = {
-      totalClicks: url.visits.length,
+      totalClicks: url.visits?.length,
       analytics: url.visits,
     };
 

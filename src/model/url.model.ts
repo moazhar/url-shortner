@@ -1,21 +1,36 @@
-import mongoose from 'mongoose';
+import { Document, Schema, model } from 'mongoose';
 
-const urlSchema = new mongoose.Schema(
-  {
-    short_id: {
-      type: String,
-      required: true,
-      unique: true,
+export interface URL extends Document {
+  userId: Schema.Types.ObjectId;
+  short_id: string;
+  redirect_url: string;
+  visits?: {
+    timestamp: Date;
+  }[];
+}
+
+export const URLModel = model<URL>(
+  'url',
+  new Schema(
+    {
+      userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+      },
+      short_id: {
+        type: String,
+        required: true,
+        unique: true,
+      },
+      redirect_url: {
+        type: String,
+        required: true,
+      },
+      visits: [{ timestamp: Date }],
     },
-    redirect_url: {
-      type: String,
-      required: true,
-    },
-    visits: [{ timestamp: Date }],
-  },
-  { timestamps: true }
+    {
+      timestamps: true,
+    }
+  )
 );
-
-const URL = mongoose.model('url', urlSchema);
-
-export default URL;
