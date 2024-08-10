@@ -1,6 +1,14 @@
 version: '3.8'
 
 services:
+  app:
+    image: azhar1997/url-shortner:latest
+    env_file: .env
+    ports:
+      - '${PORT}:${PORT}' # Use PORT from the .env file
+    depends_on:
+      - mongodb
+
   mongodb:
     image: mongo:latest
     container_name: mongodb

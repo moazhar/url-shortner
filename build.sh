@@ -1,0 +1,1 @@
+docker tag url-shortner:latest azhar1997/url-shortner:latest && docker-compose build && docker push azhar1997/url-shortner:latest

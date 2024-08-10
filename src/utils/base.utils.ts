@@ -1,5 +1,6 @@
 import crypto from 'crypto';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
+
 import PASSWORD_SALT_ROUND from '../constant/base.constant';
 
 class BaseUtility {

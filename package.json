@@ -4,9 +4,11 @@
   "description": "A URL shortener is a tool that takes a long URL and converts it into a shorter, more manageable link. This shorter link redirects to the original, long URL when clicked.",
   "main": "app.js",
   "scripts": {
-    "docker:up": "docker-compose up -d",
-    "docker:down": "docker-compose down",
+    "mongo:start": "docker start mongodb || docker run -d --name mongodb -p 27017:27017 -v mongodb_data:/data/db mongo:latest",
+    "mongo:stop": "docker stop mongodb && docker rm mongodb",
     "start:dev": "export NODE_ENV=development && ts-node-dev --files src/app.ts",
+    "start:prod:build": "sh build.sh",
+    "start:prod:deploy": "sh deploy.sh",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
@@ -31,7 +33,7 @@
   },
   "homepage": "https://github.com/moazhar/url-shortner#readme",
   "dependencies": {
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -47,11 +49,13 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/bcryptjs": "^2.4.6",
     "@types/cookie-parser": "^1.4.7",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/morgan": "^1.9.9",
+    "@types/node": "^22.1.0",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "eslint": "^8.57.0",
